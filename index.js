@@ -11,13 +11,27 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => console.error('MongoDB connection error:', err));
 
 app.use('/api', studentRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+const port = process.env.PORT || 5000;
+const server = app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Trying another port...`);
+    app.listen(0, () => {
+      console.log('Server started on an available port.');
+    });
+  } else {
+    console.error('Server error:', err);
+  }
 });
