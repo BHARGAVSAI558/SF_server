@@ -4,9 +4,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const studentRoutes = require('./routes/studentRoutes');
-const facultyRoutes = require('./routes/facultyRoutes');
-const uploadRoutes = require('./routes/uploadRoutes'); 
+const studentRoutes = require('./routes/studentRoutes.js');
+const facultyRoutes = require('./routes/facultyRoutes.js');
+const uploadRoutes = require('./routes/uploadRoutes.js'); 
 
 const app = express();
 
